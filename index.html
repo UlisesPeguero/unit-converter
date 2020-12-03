@@ -13,13 +13,93 @@
         href="./css/style.css">
 </head>
 <body>
-    <header class="text-center bg-light border shadow-sm">
+    <!-- Header -->
+    <header class="text-center bg-light shadow-sm ">
         <h1>Units converter</h1>
     </header>
-    <main class="container justify-content-center">
-        <div class="col-12 col-sm-6">
-            
-        </div>
+    <!-- Main container -->
+    <main class="container">        
+        <div class="row justify-content-center m-1 mt-2 m-sm-3">
+            <div class="col-12 col-sm-7 p-sm-4 p-2 bg-light shadow-sm">
+                <!-- From that contains the selectors and inputs -->
+                <form >
+                    <!-- Selects -->
+                    <div class="form-row">
+                        <!-- Unit #1 or baseUnit -->
+                        <div class="col-5">                            
+                            <select id="baseUnit" class="form-control unitSelect">
+                                <option disable selected>Select a unit</option>
+                                <optgroup label="Temperature">
+                                    <option value="c">Celsius</option>                                    
+                                    <option value="f">Farenheit</option>
+                                    <option value="k">Kelvin</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-2 text-center">
+                            &harr;
+                        </div>
+                        <!-- Unit #2 or resultUnit -->
+                        <div class="col-5">
+                            <select id="resultUnit" class="form-control unitSelect">
+                                <option disable selected>Select a unit</option>
+                                <optgroup label="Temperature">
+                                    <option value="c">Celsius</option>                                    
+                                    <option value="f">Farenheit</option>
+                                    <option value="k">Kelvin</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Inputs and feedback -->
+                    <div class="form-row">
+                        <!-- Input #1 or baseValue -->
+                        <div class="col-5">                            
+                            <div class="input-group">                                
+                                <input id="baseValue" class="form-control text-right" type="number" placeholder="0.00">                                
+                                <div class="input-group-append">
+                                    <div id="baseUnitSymbol" class="input-group-text">.</div>                                    
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please enter a number.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 text-center">
+                            &harr;
+                        </div>
+                        <!-- Input #2 or resultValue -->
+                        <div class="col-5">
+                            <div class="input-group">
+                                <input id="resultValue" class="form-control text-right" type="number" placeholder="0.00">
+                                <div class="input-group-append">
+                                    <div id="resultUnitSymbol" class="input-group-text">.</div>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please enter a number.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slider -->
+                    <div class="form-row">
+                        <div class="col">
+                            <!-- Decimal precision slider - decimalPrecision -->
+                            <label for="decimalPrecision" class="text-secondary mb-n2 mt-1">Decimal precision</label>
+                            <input type="range" class="custom-range" min="0" max="8" value="2" id="decimalPrecision">
+                        </div>
+                    </div>
+                    <!-- Details of conversion -->
+                    <div class="form-row mt-2">
+                        <div class="col text-center">
+                            <h5>Details</h5>
+                            <!-- Details output -->
+                            <p id="details"></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  
     </main>
     <script src="./js/app.js"></script>
 </body>
