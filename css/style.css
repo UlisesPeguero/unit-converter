@@ -7,6 +7,30 @@ header {
     height: 60px !important;
 }
 
+/* Form **********************/
+
+.arrow {
+    margin-top: -6px;
+    line-height: 0;
+    font-size: 48px;
+}
+
+select {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+input[type=number] {
+    border-top: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+}
+
+.unitSymbol {
+    border-top: 0 !important;
+    border-bottom-right-radius: 0.2em !important;
+}
+
 /* Hide number input arrows */
 
 /* Chrome, Safari, Edge, Opera */
