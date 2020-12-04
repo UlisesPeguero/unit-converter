@@ -183,7 +183,7 @@
         document.getElementById('decimalPrecisionDisplay').innerText = decimalPrecision.value;
         // update the precision on the values
         values.forEach(input => {
-
+            input.value = parseFloat(input.value).toFixed(decimalPrecision.value);
         });
     }
 
