@@ -28,7 +28,7 @@
                         <!-- Unit #1 or baseUnit -->
                         <div class="col-5">                            
                             <select id="baseUnit" class="custom-select unitSelect">
-                                <option disabled selected>Select a unit</option>                                
+                                <option disabled selected value="-">Select a unit</option>                                
                             </select>
                         </div>
                         <!-- spacer -->
@@ -36,7 +36,7 @@
                         <!-- Unit #2 or resultUnit -->
                         <div class="col-5">
                             <select id="resultUnit" class="custom-select unitSelect">
-                                <option disabled selected>Select a unit</option>                                
+                                <option disabled selected value="-">Select a unit</option>                                
                             </select>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                         <!-- Input #1 or baseValue -->
                         <div class="col-5">                            
                             <div class="input-group">                                
-                                <input id="baseValue" class="form-control text-right value" type="number" placeholder="0.00">                                
+                                <input id="baseValue" class="form-control text-right value" type="number" placeholder="0.00" step="0.00000001">                                
                                 <div class="input-group-append">
                                     <div id="baseUnitSymbol" class="input-group-text unitSymbol">C</div>                                    
                                 </div>                                
@@ -60,7 +60,7 @@
                         <!-- Input #2 or resultValue -->
                         <div class="col-5">
                             <div class="input-group">
-                                <input id="resultValue" class="form-control text-right value" type="number" placeholder="0.00">
+                                <input id="resultValue" class="form-control text-right value" type="number" placeholder="0.00" step="0.00000001">
                                 <div class="input-group-append">
                                     <div id="resultUnitSymbol" class="input-group-text unitSymbol">C</div>
                                 </div>

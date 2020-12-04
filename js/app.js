@@ -78,7 +78,14 @@
                     };
                 }
             }
-        },
+        }, 
+        dist: {
+            name: 'Distance',
+            meter: {
+                name: 'Meters',
+                symbol: 'm',
+            }
+        }
     };
 
     // elements
@@ -107,6 +114,7 @@
                     let unitDOM = document.createElement('option'); // create new option
                     unitDOM.value = key; // value = key       
                     unitDOM.setAttribute('group', groupKey); // set the group for unit
+                    unitDOM.setAttribute('symbol', unit.symbol); // set the symbol for unit
                     unitDOM.innerHTML = unit.name; // display name for the unit
                     groupDOM.appendChild(unitDOM); // add the option to the group
                 }
@@ -120,26 +128,52 @@
         input.onkeyup = (event) => onValueChange(input, index);
     });
 
+    // disable inputs
+    setValuesEnabled(false);
+
     // end intialization
 
     // callback unit selection change
     // 
+    // Checks that both selects are using units in the same group
+    // if not the other select is resetted 
     //
     // @param select    {SELECT-DOM}
     // @param index     {number}
     function onUnitChange(select, index) {
-        let selectedOption = select.selectedOptions[0];
-        let otherOption = ((index == 0) ? unitSelects[1] : unitSelects[0]).selectedOptions[0];
-        if(selectedOption.attributes.group !== otherOption.attributes.group) {
-            otherOption.attributes.selectedIndex = 0;
-        } 
+        let selectedOption = select.selectedOptions[0]; // selected option on the select that triggered the event
+        let otherSelect = unitSelects[ index == 0 ? 1 : 0]; // the other select 
+        // compare both selection groups
+        if(selectedOption.getAttribute('group') !== otherSelect.selectedOptions[0].getAttribute('group')) {
+            // if different reset the other select
+            otherSelect.selectedIndex = 0;            
+            setValuesEnabled(false);
+        } else {
+            setValuesEnabled(true);
+        }        
     }
 
     // callback onchange for inputs used as values
+    //
+    // 
+    //
     // @param input    {INPUT-DOM}
     // @param index     {number}
-    function onValueChange(input, index) {
-        console.log({input, index})
+    function onValueChange(input, index) {        
+        let from = unitSelects[index].selectedOptions[0]; // selected option from same side as the input that trigger the change
+        let to = unitSelects[index == 0 ? 1 : 0].selectedOptions[0]; // selected option for result of convertion
+        let resultDOM = values[index == 0 ? 1 : 0]; // value that will receive the converted option
+        // if any of the selects contains an invalid option
+        if(from.value == '-' || to.value == '-') { // return without change and reset
+            return;
+        }
+        // if not convert value
+        //let from
+        let result = CONVERT[from.getAttribute('group')][from.value][to.value](input.value);
+        // set converted value
+        resultDOM.value = result.value.toFixed(decimalPrecision.value);
+        // display formula of conversion
+        displayFormula(result.formula + ` = <strong>${resultDOM.value} ${to.getAttribute('symbol')}</strong>` );        
     }
     
     // callback for onchange decimalPrecision
@@ -148,6 +182,23 @@
         // update the precision displayed
         document.getElementById('decimalPrecisionDisplay').innerText = decimalPrecision.value;
         // update the precision on the values
+        values.forEach(input => {
+
+        });
+    }
+
+    function displayFormula(formula) {
+        document.getElementById('details').innerHTML = formula;
+    }
+
+    function setValuesEnabled(enable) {
+        values.forEach(input => {
+            if(!enable) {
+                input.setAttribute('disabled', true);
+            } else {
+                input.removeAttribute('disabled');
+            }
+        });
     }
 
 //})();
