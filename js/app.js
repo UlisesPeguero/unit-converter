@@ -183,15 +183,19 @@
         });
     }
 
+    // display formula
     function displayFormula(formula) {
         document.getElementById('details').innerHTML = formula;
     }
 
+    // enables or disables the inputs
     function setValuesEnabled(enable) {
         values.forEach(input => {
             if(!enable) {
+                // add attribute disabled to disable
                 input.setAttribute('disabled', true);
             } else {
+                // remove attribute disabled to enable
                 input.removeAttribute('disabled');
             }
         });
