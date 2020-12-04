@@ -1,5 +1,5 @@
 // create local scope
-//(function() {
+(function() {
     // constants
     /* Object literal that contains the conversion paths and methods to convert
         if wanting to convert Celsius to Farenheit the path would be
@@ -78,13 +78,6 @@
                     };
                 }
             }
-        }, 
-        dist: {
-            name: 'Distance',
-            meter: {
-                name: 'Meters',
-                symbol: 'm',
-            }
         }
     };
 
@@ -143,6 +136,8 @@
     function onUnitChange(select, index) {
         let selectedOption = select.selectedOptions[0]; // selected option on the select that triggered the event
         let otherSelect = unitSelects[ index == 0 ? 1 : 0]; // the other select 
+        // update unit symbol
+        document.getElementById('unitSymbol' + index).innerHTML = selectedOption.getAttribute('symbol');
         // compare both selection groups
         if(selectedOption.getAttribute('group') !== otherSelect.selectedOptions[0].getAttribute('group')) {
             // if different reset the other select
@@ -155,7 +150,8 @@
 
     // callback onchange for inputs used as values
     //
-    // 
+    // determinates the path to get the conversion method and obtains the formula and converted value
+    // depending on which input triggers the event the route would be left to right or viceversa 
     //
     // @param input    {INPUT-DOM}
     // @param index     {number}
@@ -201,4 +197,4 @@
         });
     }
 
-//})();
+})();
