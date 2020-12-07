@@ -1,6 +1,21 @@
 // create local scope
-(function() {
-    // constants
+//(function() {
+    // constants 
+    // constant that holds template for conversion 
+    //
+    //  @param value        {number}
+    //  @param multiplier   {number}    -> number that multiplied for value gives us the conversion value
+    //  @param operator = * {string}    -> used for the formula and decide if multiplier is *=x or /=1/x
+    //  @return {
+    //      formula     {string}    -> formula for display     
+    //      value       {number}    -> converted value  
+    //  }
+    function PRODUCT(value, multiplier, operator = '*') {
+        return {
+            formula: `<strong>${value}</strong> ${operator} ${multiplier}`,
+            value: value * (operator == '*' ? multiplier : 1/multiplier)
+        };       
+    }
     /* Object literal that contains the conversion paths and methods to convert
         if wanting to convert Celsius to Farenheit the path would be
 
@@ -19,9 +34,8 @@
     */
     const CONVERT = {
         // measurement groups
-        temp: {            
+        tem: {            
             name: 'Temperature', // name that identifies the group            
-            K_CONSTANT: 273.15, // Kelvin conversion constant            
             c: {                
                 name: 'Celsius', // name of the measurement unit
                 symbol: '°C', // symbol of the measurement unit
@@ -35,8 +49,8 @@
                 // method to convert to Kelvin
                 k(value) {
                     return {
-                        formula: `<strong>${value}</strong> + ${CONVERT.temp.K_CONSTANT}`,
-                        value: value + CONVERT.temp.K_CONSTANT
+                        formula: `<strong>${value}</strong> + ${CONVERT.tem.k.CONSTANT}`,
+                        value: value + CONVERT.tem.k.CONSTANT
                     };
                 }
             },
@@ -54,19 +68,20 @@
                 k(value) {
                     let c = this.c(value);
                     return {
-                        formula: c.formula + ' + ' + CONVERT.temp.K_CONSTANT,
-                        value: c.value + CONVERT.temp.K_CONSTANT
+                        formula: c.formula + ' + ' + CONVERT.tem.k.CONSTANT,
+                        value: c.value + CONVERT.tem.k.CONSTANT
                     };
                 }
             },
             k: {
                 name: 'Kelvin',
                 symbol: '°K',                
-                // method to convert to Celsius
+                CONSTANT: 273.15, // Kelvin conversion constant                        
+                // method to convert to Celsius                
                 c(value) {
                     return {
-                        formula: `<strong>${value}</strong> - ${CONVERT.temp.K_CONSTANT}`,
-                        value: value - CONVERT.temp.K_CONSTANT
+                        formula: `<strong>${value}</strong> - ${CONVERT.tem.k.CONSTANT}`,
+                        value: value - CONVERT.tem.k.CONSTANT
                     };                
                 },
                 // method to convert to Farenheit
@@ -78,9 +93,220 @@
                     };
                 }
             }
-        }
+        },
+        len: {
+            name: 'Length',            
+            m: {
+                name: 'Meter',
+                symbol: 'm',
+                FT: 3.28084, 
+                YD: 1.09361,   
+                IN: 39.3701,
+                ft(value) {
+                    return PRODUCT(value, this.FT);                    
+                },
+                yd(value) {
+                    return PRODUCT(value, this.YD);                    
+                },
+                in(value) {
+                    return PRODUCT(value, this.IN);                    
+                },
+                mi(value) {
+                    return PRODUCT(value, CONVERT.len.mi.M, '/');                    
+                }
+            },
+            ft: {
+                name: 'Foot',
+                symbol: '\'',
+                IN: 12,
+                m(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.m.FT}`,
+                        value: value / CONVERT.len.m.FT
+                    };
+                },
+                in(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.len.ft.IN}`,
+                        value: value * CONVERT.len.ft.IN
+                    };
+                },
+                yd(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.yd.FT}`,
+                        value: value / CONVERT.len.yd.FT
+                    };
+                },
+                mi(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.mi.FT}`,
+                        value: value / CONVERT.len.mi.FT
+                    };
+                }
+            },
+            yd: {
+                name: 'Yard',
+                symbol: 'yd',
+                FT: 3,
+                IN: 36,
+                m(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.m.YD}`,
+                        value: value / CONVERT.len.m.YD
+                    };
+                },
+                ft(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.len.yd.FT}`,
+                        value: value * CONVERT.len.yd.FT
+                    };
+                },                
+                in(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.len.yd.IN}`,
+                        value: value * CONVERT.len.yd.IN
+                    };
+                },
+                mi(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.mi.YD}`,
+                        value: value / CONVERT.len.mi.YD
+                    };
+                }
+            },
+            in: {
+                name: 'Inch',
+                symbol: '\'\'',
+                m(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.m.IN}`,
+                        value: value / CONVERT.len.m.IN
+                    };
+                },
+                ft(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.ft.IN}`,
+                        value: value / CONVERT.len.ft.IN
+                    };
+                },                
+                yd(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.yd.IN}`,
+                        value: value / CONVERT.len.yd.IN
+                    };
+                },
+                mi(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.len.mi.IN}`,
+                        value: value / CONVERT.len.mi.IN
+                    };
+                }
+            },
+            mi: {
+                name: 'Mile',
+                symbol: 'mi',
+                M: 1609.344,
+                FT: 5280,
+                YD: 1760,
+                IN: 63360,
+                m(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.M}`,
+                        value: value * CONVERT.len.mi.M
+                    };
+                },
+                ft(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.FT}`,
+                        value: value * CONVERT.len.mi.FT
+                    };
+                },
+                yd(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.YD}`,
+                        value: value * CONVERT.len.mi.YD
+                    };
+                },
+                in(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.IN}`,
+                        value: value * CONVERT.len.mi.IN
+                    };
+                }                
+            }
+        },
+        vol: {
+            name: 'Volume',
+            l: {
+                name: 'Liter',
+                symbol: 'l',
+                FLOZ: 33.814, 
+                QT: 1.05669,               
+                floz(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.vol.l.FLOZ}`,
+                        value: value * CONVERT.vol.l.FLOZ
+                    };
+                },
+                m3(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.vol.m3.L}`,
+                        value: value / CONVERT.vol.m3.L
+                    };
+                },
+                qt(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.vol.l.QT}`,
+                        value: value * CONVERT.vol.l.QT
+                    };
+                }, 
+                cuft(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.vol.cuft.L}`,
+                        value: value / CONVERT.vol.cuft.L
+                    };
+                }
+            },
+            floz: {
+                name: 'Fluid Ounces',
+                symbol: 'fl oz',
+                l(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.vol.l.FLOZ}`,
+                        value: value / CONVERT.vol.l.FLOZ
+                    };
+                },
+                m3(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.vol.m3.L}`,
+                        value: value / CONVERT.vol.m3.L
+                    };
+                },
+                qt(value) {
+                    return {
+                        formula: `<strong>${value}</strong> * ${CONVERT.vol.l.QT}`,
+                        value: value * CONVERT.vol.l.QT
+                    };
+                }, 
+                cuft(value) {
+                    return {
+                        formula: `<strong>${value}</strong> / ${CONVERT.vol.cuft.L}`,
+                        value: value / CONVERT.vol.cuft.L
+                    };
+                }
+            },
+            m3: {
+                L: 1000,
+            },
+            cuft: {
+                L: 28.316846592,
+            }
+        },
+
     };
 
+    // control variables
+    let lastInputIndex = 0; // keep track of what input was used last, to know in what direction we need to update
     // elements
     let unitSelects = document.querySelectorAll('.unitSelect');
     let values = document.querySelectorAll('.value');
@@ -118,7 +344,7 @@
 
     // attach events to inputs
     values.forEach((input, index) => {
-        input.onkeyup = (event) => onValueChange(input, index);
+        input.onkeyup = (event) => onValueChange(index);
     });
 
     // disable inputs
@@ -135,41 +361,55 @@
     // @param index     {number}
     function onUnitChange(select, index) {
         let selectedOption = select.selectedOptions[0]; // selected option on the select that triggered the event
-        let otherSelect = unitSelects[ index == 0 ? 1 : 0]; // the other select 
+        let otherSelect = unitSelects[other(index)]; // the other select 
         // update unit symbol
         document.getElementById('unitSymbol' + index).innerHTML = selectedOption.getAttribute('symbol');
         // compare both selection groups
-        if(selectedOption.getAttribute('group') !== otherSelect.selectedOptions[0].getAttribute('group')) {
-            // if different reset the other select
+        if(selectedOption.getAttribute('group') !== otherSelect.selectedOptions[0].getAttribute('group') || selectedOption.value == otherSelect.selectedOptions[0].value) {
+            // if different or same unit reset the other select
             otherSelect.selectedIndex = 0;            
             setValuesEnabled(false);
         } else {
+            // recalculate value using the other intpu as source
+            calculateValue(other(index));
             setValuesEnabled(true);
         }        
     }
 
     // callback onchange for inputs used as values
     //
-    // determinates the path to get the conversion method and obtains the formula and converted value
+    // @param index             {number}
+    function onValueChange(index) {  
+        // check if the value was changed      
+        console.log("keyup", index);
+        if(calculateValue(index)) {
+            // updates lastInputIndex if the value was changed
+            lastInputIndex = index;           
+        }
+    }
+
+    // Determines the path to get the conversion method and obtains the formula and converted value
     // depending on which input triggers the event the route would be left to right or viceversa 
     //
-    // @param input    {INPUT-DOM}
-    // @param index     {number}
-    function onValueChange(input, index) {        
+    // @param index             {number}    // input that originates the calculation
+    // @return                  {boolean}   // true if everything worked out, false if there was a problem
+    function calculateValue(index) {        
+        let input = values[index];
         let from = unitSelects[index].selectedOptions[0]; // selected option from same side as the input that trigger the change
-        let to = unitSelects[index == 0 ? 1 : 0].selectedOptions[0]; // selected option for result of convertion
-        let resultDOM = values[index == 0 ? 1 : 0]; // value that will receive the converted option
+        let to = unitSelects[other(index)].selectedOptions[0]; // selected option for result of convertion
+        let resultDOM = values[other(index)]; // value that will receive the converted option
         // if any of the selects contains an invalid option
-        if(from.value == '-' || to.value == '-') { // return without change and reset
-            return;
+        if(from.value == '-' || to.value == '-') { // return false without change and reset
+            return false;
         }
         // if not convert value
-        //let from
         let result = CONVERT[from.getAttribute('group')][from.value][to.value](input.value);
         // set converted value
         resultDOM.value = result.value.toFixed(decimalPrecision.value);
         // display formula of conversion
-        displayFormula(result.formula + ` = <strong>${resultDOM.value} ${to.getAttribute('symbol')}</strong>` );        
+        displayFormula(result.formula + ` = <strong>${resultDOM.value} ${to.getAttribute('symbol')}</strong>` );     
+        // if method finishes without problems
+        return true;
     }
     
     // callback for onchange decimalPrecision
@@ -178,9 +418,8 @@
         // update the precision displayed
         document.getElementById('decimalPrecisionDisplay').innerText = decimalPrecision.value;
         // update the precision on the values
-        values.forEach(input => {
-            input.value = parseFloat(input.value).toFixed(decimalPrecision.value);
-        });
+       values[lastInputIndex].value = parseFloat(values[lastInputIndex].value).toFixed(decimalPrecision.value); // update precision last input value
+       calculateValue(lastInputIndex); // update last calculated value with new precision
     }
 
     // display formula
@@ -201,4 +440,9 @@
         });
     }
 
-})();
+    // provides the other index from the one provided between 1 and 0
+    function other(index) {
+        return index == 0 ? 1 : 0;
+    }
+
+//})();
