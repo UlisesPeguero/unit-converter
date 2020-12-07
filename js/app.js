@@ -1,5 +1,5 @@
 // create local scope
-//(function() {
+(function() {
     // constants 
     // function that holds template for simple conversion by multiplication
     //
@@ -432,4 +432,4 @@
         return index == 0 ? 1 : 0;
     }
 
-//})();
+})();
