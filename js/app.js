@@ -1,11 +1,11 @@
 // create local scope
 //(function() {
     // constants 
-    // constant that holds template for conversion 
+    // function that holds template for simple conversion by multiplication
     //
     //  @param value        {number}
     //  @param multiplier   {number}    -> number that multiplied for value gives us the conversion value
-    //  @param operator = * {string}    -> used for the formula and decide if multiplier is *=x or /=1/x
+    //  @param operator = * {string}    -> used for the formula
     //  @return {
     //      formula     {string}    -> formula for display     
     //      value       {number}    -> converted value  
@@ -13,9 +13,16 @@
     function PRODUCT(value, multiplier, operator = '*') {
         return {
             formula: `<strong>${value}</strong> ${operator} ${multiplier}`,
-            value: value * (operator == '*' ? multiplier : 1/multiplier)
+            value: value * (operator =='*' ? multiplier : 1/multiplier)
         };       
     }
+
+    //  function  for conversions that need division
+    function DIVISION(value, divider) {
+        // calls PRODUCT with a / operator to change the multiplier and formula
+        return PRODUCT(value, divider, '/');
+    }
+
     /* Object literal that contains the conversion paths and methods to convert
         if wanting to convert Celsius to Farenheit the path would be
 
@@ -112,36 +119,24 @@
                     return PRODUCT(value, this.IN);                    
                 },
                 mi(value) {
-                    return PRODUCT(value, CONVERT.len.mi.M, '/');                    
+                    return DIVISION(value, CONVERT.len.mi.M);                    
                 }
             },
             ft: {
                 name: 'Foot',
-                symbol: '\'',
+                symbol: 'ft',
                 IN: 12,
                 m(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.m.FT}`,
-                        value: value / CONVERT.len.m.FT
-                    };
+                    return DIVISION(value, CONVERT.len.m.FT);  
                 },
                 in(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.len.ft.IN}`,
-                        value: value * CONVERT.len.ft.IN
-                    };
+                    return PRODUCT(value, this.IN);  
                 },
                 yd(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.yd.FT}`,
-                        value: value / CONVERT.len.yd.FT
-                    };
+                    return DIVISION(value, CONVERT.len.yd.FT);  
                 },
                 mi(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.mi.FT}`,
-                        value: value / CONVERT.len.mi.FT
-                    };
+                    return DIVISION(value, CONVERT.len.mi.FT);  
                 }
             },
             yd: {
@@ -150,56 +145,32 @@
                 FT: 3,
                 IN: 36,
                 m(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.m.YD}`,
-                        value: value / CONVERT.len.m.YD
-                    };
+                    return DIVISION(value, CONVERT.len.m.YD);                      
                 },
                 ft(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.len.yd.FT}`,
-                        value: value * CONVERT.len.yd.FT
-                    };
+                    return PRODUCT(value, this.FT);                      
                 },                
                 in(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.len.yd.IN}`,
-                        value: value * CONVERT.len.yd.IN
-                    };
+                    return PRODUCT(value, this.IN);  
                 },
                 mi(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.mi.YD}`,
-                        value: value / CONVERT.len.mi.YD
-                    };
+                    return DIVISION(value, CONVERT.len.mi.YD);                      
                 }
             },
             in: {
                 name: 'Inch',
-                symbol: '\'\'',
+                symbol: 'in',
                 m(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.m.IN}`,
-                        value: value / CONVERT.len.m.IN
-                    };
+                    return DIVISION(value, CONVERT.len.m.IN);                    
                 },
                 ft(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.ft.IN}`,
-                        value: value / CONVERT.len.ft.IN
-                    };
+                    return DIVISION(value, CONVERT.len.ft.IN);                    
                 },                
                 yd(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.yd.IN}`,
-                        value: value / CONVERT.len.yd.IN
-                    };
+                    return DIVISION(value, CONVERT.len.yd.IN);                    
                 },
                 mi(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.len.mi.IN}`,
-                        value: value / CONVERT.len.mi.IN
-                    };
+                    return DIVISION(value, CONVERT.len.mi.IN);
                 }
             },
             mi: {
@@ -210,28 +181,16 @@
                 YD: 1760,
                 IN: 63360,
                 m(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.M}`,
-                        value: value * CONVERT.len.mi.M
-                    };
+                    return PRODUCT(value, this.M);                    
                 },
                 ft(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.FT}`,
-                        value: value * CONVERT.len.mi.FT
-                    };
+                    return PRODUCT(value, this.FT);
                 },
                 yd(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.YD}`,
-                        value: value * CONVERT.len.mi.YD
-                    };
+                    return PRODUCT(value, this.YD);
                 },
                 in(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.len.mi.IN}`,
-                        value: value * CONVERT.len.mi.IN
-                    };
+                    return PRODUCT(value, this.IN);
                 }                
             }
         },
@@ -243,63 +202,89 @@
                 FLOZ: 33.814, 
                 QT: 1.05669,               
                 floz(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.vol.l.FLOZ}`,
-                        value: value * CONVERT.vol.l.FLOZ
-                    };
+                    return PRODUCT(value, this.FLOZ);                    
                 },
                 m3(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.vol.m3.L}`,
-                        value: value / CONVERT.vol.m3.L
-                    };
+                    return DIVISION(value, CONVERT.vol.m3.L);                    
                 },
                 qt(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.vol.l.QT}`,
-                        value: value * CONVERT.vol.l.QT
-                    };
+                    return PRODUCT(value, this.QT);                    
                 }, 
                 cuft(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.vol.cuft.L}`,
-                        value: value / CONVERT.vol.cuft.L
-                    };
+                    return DIVISION(value, CONVERT.vol.cuft.L);                    
                 }
             },
             floz: {
-                name: 'Fluid Ounces',
+                name: 'Fluid ounce',
                 symbol: 'fl oz',
                 l(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.vol.l.FLOZ}`,
-                        value: value / CONVERT.vol.l.FLOZ
-                    };
+                    return DIVISION(value, CONVERT.vol.l.FLOZ);                    
                 },
                 m3(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.vol.m3.L}`,
-                        value: value / CONVERT.vol.m3.L
-                    };
+                    return DIVISION(value, CONVERT.vol.m3.FLOZ);                   
                 },
                 qt(value) {
-                    return {
-                        formula: `<strong>${value}</strong> * ${CONVERT.vol.l.QT}`,
-                        value: value * CONVERT.vol.l.QT
-                    };
+                    return DIVISION(value, CONVERT.vol.qt.FLOZ);                  
                 }, 
                 cuft(value) {
-                    return {
-                        formula: `<strong>${value}</strong> / ${CONVERT.vol.cuft.L}`,
-                        value: value / CONVERT.vol.cuft.L
-                    };
+                    return DIVISION(value, CONVERT.vol.cuft.FLOZ);
                 }
             },
             m3: {
+                name: 'Cubi meter',
+                symbol: 'm³',
                 L: 1000,
+                FLOZ: 33814,
+                QT: 1056.68821,
+                CUFT: 35.314667,
+                l(value) {
+                    return PRODUCT(value, this.L);                    
+                },                
+                floz(value) {
+                    return PRODUCT(value, this.FLOZ);                    
+                },
+                qt(value) {
+                    return PRODUCT(value, this.QT);                    
+                }, 
+                cuft(value) {
+                    return PRODUCT(value, this.CUFT);                    
+                }
+            },
+            qt: {
+                name: 'Quart',
+                symbol: 'qt',
+                FLOZ: 32,
+                l(value) {
+                    return DIVISION(value, CONVERT.vol.l.QT);                    
+                },
+                m3(value) {
+                    return DIVISION(value, CONVERT.vol.m3.QT);                   
+                },
+                floz(value) {
+                    return PRODUCTR(value, this.FLOZ);                  
+                }, 
+                cuft(value) {
+                    return DIVISION(value, CONVERT.vol.cuft.QT);
+                }
             },
             cuft: {
+                name: 'Cubic foot',
+                symbol: 'ft³',
                 L: 28.316846592,
+                FLOZ: 957.506494,
+                QT: 29.9221,
+                l(value) {
+                    return PRODUCT(value, this.L);
+                },
+                floz(value) {
+                    return PRODUCT(value, this.FLOZ);
+                },
+                m3(value) {
+                    return DIVISION(value, CONVERT.vol.m3.CUFT);
+                },
+                qt(value) {
+                    return PRODUCT(value, this.QT);
+                }
             }
         },
 
@@ -311,9 +296,6 @@
     let unitSelects = document.querySelectorAll('.unitSelect');
     let values = document.querySelectorAll('.value');
     let decimalPrecision = document.getElementById('decimalPrecision');
-
-    // attach event onchange to decimal precision slider
-    decimalPrecision.onchange = updateDecimalPrecision;
     
     // attach events to selects and populate options
     unitSelects.forEach((select, index) => {
@@ -347,6 +329,11 @@
         input.onkeyup = (event) => onValueChange(index);
     });
 
+    // attach event onchange to decimal precision slider
+    decimalPrecision.onchange = updateDecimalPrecision;
+    // call update once to get the starting value
+    updateDecimalPrecision();
+    
     // disable inputs
     setValuesEnabled(false);
 
