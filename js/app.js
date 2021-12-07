@@ -390,7 +390,7 @@
             return false;
         }
         // if not convert value
-        console.debug(from.getAttribute('group',CONVERT[from.getAttribute('group')][from.value][to.value](input.value)));
+        console.debug(from.getAttribute('group'),CONVERT[from.getAttribute('group')][from.value][to.value](input.value));
         let result = CONVERT[from.getAttribute('group')][from.value][to.value](input.value);
         // set converted value
         resultDOM.value = result.value.toFixed(decimalPrecision.value);
