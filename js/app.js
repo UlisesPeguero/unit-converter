@@ -13,7 +13,7 @@
     function PRODUCT(value, multiplier, operator = '*') {
         return {
             formula: `<strong>${value}</strong> ${operator} ${multiplier}`,
-            value: Number(value * (operator =='*' ? multiplier : 1/multiplier)
+            value: Number(value * (operator =='*' ? multiplier : 1/multiplier))
         };       
     }
 
