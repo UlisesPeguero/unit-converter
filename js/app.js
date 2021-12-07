@@ -299,9 +299,6 @@
     
     // attach events to selects and populate options
     unitSelects.forEach((select, index) => {
-        // add onchange
-        // use an anonymous function to send our own parameters
-        select.onchange = () => onUnitChange(select, index); 
         // load options
         for(let groupKey in CONVERT) {
             let group = CONVERT[groupKey]; // get group from CONVERT
@@ -322,6 +319,9 @@
             }  
             select.appendChild(groupDOM);          
         }
+        // add onchange
+        // use an anonymous function to send our own parameters
+        select.onchange = () => onUnitChange(select, index);        
     });
 
     // attach events to inputs
