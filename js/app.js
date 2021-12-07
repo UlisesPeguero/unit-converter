@@ -368,8 +368,7 @@
     // @param index             {number}
     function onValueChange(index) {  
         // check if the value was changed      
-        console.log("keyup", index);
-        if(calculateValue(index)) {
+       if(calculateValue(index)) {
             // updates lastInputIndex if the value was changed
             lastInputIndex = index;           
         }
