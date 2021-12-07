@@ -13,7 +13,7 @@
     function PRODUCT(value, multiplier, operator = '*') {
         return {
             formula: `<strong>${value}</strong> ${operator} ${multiplier}`,
-            value: value * (operator =='*' ? multiplier : 1/multiplier)
+            value: Number(value * (operator =='*' ? multiplier : 1/multiplier)
         };       
     }
 
@@ -390,8 +390,7 @@
             return false;
         }
         // if not convert value
-        console.debug(from.getAttribute('group'),CONVERT[from.getAttribute('group')][from.value][to.value](input.value));
-        let result = CONVERT[from.getAttribute('group')][from.value][to.value](input.value);
+        let result = CONVERT[from.getAttribute('group')][from.value][to.value](Number(input.value));
         // set converted value
         resultDOM.value = result.value.toFixed(decimalPrecision.value);
         // display formula of conversion
